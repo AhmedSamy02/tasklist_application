@@ -28,7 +28,7 @@ Response successResponseWithPage(
       'status_code': 200,
       'message': message,
       'data': data,
-      'page': {
+      'pagination': {
         'page_number': page,
         'page_limit': limit,
       },

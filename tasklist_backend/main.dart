@@ -11,10 +11,17 @@ Future<void> init(InternetAddress ip, int port) async {
   final db = Db('mongodb://localhost:27017/dart_frog');
   await db.open();
   getIt.registerSingleton<Db>(db);
-  print('Connected to database');
-  getIt.registerSingleton<DbCollection>(db.collection('users'),
-      instanceName: 'users');
-  print('Registered users collection');
+  logger.i('Connected to database');
+  getIt.registerSingleton<DbCollection>(
+    db.collection('users'),
+    instanceName: 'users',
+  );
+  logger.i('Registered users collection');
+  getIt.registerSingleton<DbCollection>(
+    db.collection('recipes'),
+    instanceName: 'recipes',
+  );
+  logger.i('Registered recipes collection');
 }
 
 Future<HttpServer> run(Handler handler, InternetAddress ip, int port) async {
