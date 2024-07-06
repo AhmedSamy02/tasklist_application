@@ -1,6 +1,8 @@
 import 'package:dart_frog/dart_frog.dart';
 
+import '../../lib/constants/responses.dart';
+
 Response onRequest(RequestContext context) {
-  // TODO: implement route handler
-  return Response(body: 'This is a new route!');
+    return Responses.notFound;
+
 }

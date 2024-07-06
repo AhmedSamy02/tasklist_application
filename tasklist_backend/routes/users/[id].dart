@@ -1,10 +1,10 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
-import '../../constants/methods.dart';
-import '../../constants/responses.dart';
-import '../../constants/values.dart';
-import '../../models/user.dart';
+import '../../lib/constants/methods.dart';
+import '../../lib/constants/responses.dart';
+import '../../lib/constants/values.dart';
+import '../../lib/models/user.dart';
 
 Future<Response> onRequest(RequestContext context, String id) async {
   if (!checkMethod(context, HttpMethod.get)) {

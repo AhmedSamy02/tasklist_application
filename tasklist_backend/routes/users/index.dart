@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
-import '../../constants/methods.dart';
-import '../../constants/responses.dart';
-import '../../constants/values.dart';
+import '../../lib/constants/methods.dart';
+import '../../lib/constants/responses.dart';
+import '../../lib/constants/values.dart';
 
 Future<Response> onRequest(RequestContext context) async {
   if (context.request.method != HttpMethod.get) {

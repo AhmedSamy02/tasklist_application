@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
-import 'constants/values.dart';
+import 'lib/constants/values.dart';
 
 Future<void> init(InternetAddress ip, int port) async {
   // Any code initialized within this method will only run on server start, any hot reloads
@@ -22,6 +22,10 @@ Future<void> init(InternetAddress ip, int port) async {
     instanceName: 'recipes',
   );
   logger.i('Registered recipes collection');
+  getIt.registerSingleton<DbCollection>(
+    db.collection('lists'),
+    instanceName: 'lists',
+  );
 }
 
 Future<HttpServer> run(Handler handler, InternetAddress ip, int port) async {
