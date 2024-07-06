@@ -9,3 +9,4 @@ Logger logger = Logger(
     lineLength: 50,
   ),
 );
+const String secretKey = 'secret_key';

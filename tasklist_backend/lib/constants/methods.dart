@@ -16,7 +16,15 @@ Response successResponse(String message, Map<String, dynamic> data) {
     },
   );
 }
-
+Response badRequestResponse(String message) {
+  return Response.json(
+    body: {
+      'status_code': 400,
+      'message': message,
+    },
+    statusCode: 400,
+  );
+}
 Response successResponseWithPage(
   String message,
   List<Map<String, dynamic>> data,
