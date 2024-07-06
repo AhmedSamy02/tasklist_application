@@ -46,4 +46,15 @@ class User {
       'gender': gender,
     };
   }
+
+  Map<String, dynamic> toJsonWithToken(String token) {
+    return {
+      'id': id,
+      'token': token,
+      'email': email,
+      'first_name': firstName,
+      'last_name': lastName,
+      'gender': gender,
+    };
+  }
 }
