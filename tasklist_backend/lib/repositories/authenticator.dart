@@ -45,26 +45,44 @@ class Authenticator {
   }
 
   Future<Response> generateOTP(String email) async {
-      final response = await getIt.get<Dio>().post(
-        'https://otp-service-beta.vercel.app/api/otp/generate',
-        data: {
-          'email': email,
-          'type': 'alphanumeric',
-          'organization': 'Tasklist App',
-          'subject': 'OTP Verification'
-        },
-      );
-      return response;
+    final response = await getIt.get<Dio>().post(
+      'https://otp-service-beta.vercel.app/api/otp/generate',
+      data: {
+        'email': email,
+        'type': 'alphanumeric',
+        'organization': 'Tasklist App',
+        'subject': 'OTP Verification'
+      },
+    );
+    return response;
   }
+
   Future<Response> verifyOTP(String email, String otp) async {
-      final response = await getIt.get<Dio>().post(
-        'https://otp-service-beta.vercel.app/api/otp/verify',
-        data: {
-          'email': email,
-          'otp': otp,
-        },
-      );
-      return response;
-    
+    final response = await getIt.get<Dio>().post(
+      'https://otp-service-beta.vercel.app/api/otp/verify',
+      data: {
+        'email': email,
+        'otp': otp,
+      },
+    );
+    return response;
+  }
+
+  Future<User> createUser({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+    required String gender,
+  }) async {
+    final gen = gender.toLowerCase() == 'male' ? 'Male' : 'Female';
+    final user = await getIt.get<DbCollection>(instanceName: 'users').insert({
+      'first_name': firstName,
+      'last_name': lastName,
+      'gender': gen,
+      'email': email,
+      'password': password,
+    });
+    return User.fromMap(user);
   }
 }
