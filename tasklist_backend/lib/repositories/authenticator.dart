@@ -1,4 +1,5 @@
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:dio/dio.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:tasklist_backend/constants/values.dart';
 import 'package:tasklist_backend/models/user.dart';
@@ -41,5 +42,29 @@ class Authenticator {
           where.id(ObjectId.fromHexString(jwt.payload['id'] as String)),
         )
         .then((value) => value != null ? User.fromMap(value) : null);
+  }
+
+  Future<Response> generateOTP(String email) async {
+      final response = await getIt.get<Dio>().post(
+        'https://otp-service-beta.vercel.app/api/otp/generate',
+        data: {
+          'email': email,
+          'type': 'alphanumeric',
+          'organization': 'Tasklist App',
+          'subject': 'OTP Verification'
+        },
+      );
+      return response;
+  }
+  Future<Response> verifyOTP(String email, String otp) async {
+      final response = await getIt.get<Dio>().post(
+        'https://otp-service-beta.vercel.app/api/otp/verify',
+        data: {
+          'email': email,
+          'otp': otp,
+        },
+      );
+      return response;
+    
   }
 }

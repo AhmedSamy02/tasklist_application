@@ -1,14 +1,15 @@
 import 'dart:io';
 
 import 'package:dart_frog/dart_frog.dart';
+import 'package:dio/dio.dart';
 import 'package:mongo_dart/mongo_dart.dart';
-
-import 'lib/constants/values.dart';
+import 'package:tasklist_backend/constants/values.dart';
 
 Future<void> init(InternetAddress ip, int port) async {
   // Any code initialized within this method will only run on server start, any hot reloads
   // afterwards will not trigger this method until a hot restart.
-  final db = Db('mongodb://localhost:27017/dart_frog');
+  getIt.registerSingleton<Dio>(Dio());
+  final db = Db(kDbLink);
   await db.open();
   getIt.registerSingleton<Db>(db);
   logger.i('Connected to database');
