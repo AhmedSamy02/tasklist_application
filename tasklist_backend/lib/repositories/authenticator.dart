@@ -67,7 +67,12 @@ class Authenticator {
     );
     return response;
   }
-
+  Future<User?> findUserByEmail(String email) async {
+    final userCollection = getIt.get<DbCollection>(instanceName: 'users');
+    return userCollection
+        .findOne(where.eq('email', email))
+        .then((value) => value != null ? User.fromMap(value) : null);
+  }
   Future<User> createUser({
     required String email,
     required String password,
@@ -84,5 +89,17 @@ class Authenticator {
       'password': password,
     });
     return User.fromMap(user);
+  }
+  Future<bool>resetPassword(String email, String password) async {
+    final userCollection = getIt.get<DbCollection>(instanceName: 'users');
+    final user = await userCollection.findOne(where.eq('email', email));
+    if (user == null) {
+      return false;
+    }
+    await userCollection.update(
+      where.eq('email', email),
+      modify.set('password', password),
+    );
+    return true;
   }
 }

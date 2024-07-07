@@ -1,4 +1,5 @@
 import 'package:dart_frog/dart_frog.dart';
+import 'package:tasklist_backend/constants/methods.dart';
 import 'package:tasklist_backend/repositories/authenticator.dart';
 
 Future<Response> onRequest(RequestContext context) async {
@@ -8,6 +9,15 @@ Future<Response> onRequest(RequestContext context) async {
       body: {
         'status_code': 400,
         'message': 'Email is required',
+      },
+      statusCode: 400,
+    );
+  }
+  if (!checkEmailAcceptance(email)) {
+    return Response.json(
+      body: {
+        'status_code': 400,
+        'message': "Email isn't valid",
       },
       statusCode: 400,
     );
