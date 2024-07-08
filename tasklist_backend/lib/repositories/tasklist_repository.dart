@@ -19,7 +19,7 @@ class TasklistRepository {
     return TaskList.fromMap(taskList!);
   }
 
-  Future<List<Map<String,dynamic>>> getTasklists(String userId) async {
+  Future<List<Map<String, dynamic>>> getTasklists(String userId) async {
     final taskLists = await getIt
         .get<DbCollection>(instanceName: 'task_lists')
         .find(where.eq('user_id', userId))
@@ -27,18 +27,21 @@ class TasklistRepository {
     return taskLists;
   }
 
-  Future<bool> checkTaskListExist(
-      {required String userId, required String title}) async {
+  Future<bool> checkTaskListExist({
+    required String userId,
+    required String title,
+  }) async {
     final taskList = await getIt
         .get<DbCollection>(instanceName: 'task_lists')
         .findOne(where.eq('user_id', userId).eq('title', title));
     return taskList != null;
   }
-  Future<bool> deleteTaskList(String userId,String title)async{
+
+  Future<bool> deleteTaskList(String userId, String title) async {
     final taskList = await getIt
         .get<DbCollection>(instanceName: 'task_lists')
         .findOne(where.eq('user_id', userId).eq('title', title));
-    if(taskList==null){
+    if (taskList == null) {
       return false;
     }
     await getIt

@@ -1,6 +1,14 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
 class TaskList {
+
+  TaskList({
+    required this.id,
+    required this.userId,
+    required this.title,
+    required this.description,
+    required this.tasksCount,
+  });
   factory TaskList.fromMap(Map<String, dynamic> map) {
     return TaskList(
       id: map['_id'] as ObjectId,
@@ -20,14 +28,6 @@ class TaskList {
       'tasks_count': tasksCount,
     };
   }
-
-  TaskList({
-    required this.id,
-    required this.userId,
-    required this.title,
-    required this.description,
-    required this.tasksCount,
-  });
   ObjectId? id;
   String? userId;
   String? title;

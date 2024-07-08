@@ -35,6 +35,12 @@ bool checkEmailAcceptance(String email) {
   }
   return false;
 }
+bool checkKeyFoundOrEmpty(Map<String, dynamic> body, String key) {
+  if (!body.containsKey(key) || body[key] == null || body[key] == '') {
+    return false;
+  }
+  return true;
+}
 
 //* The pattern ensures that the password
 //* 1) Contains at least 8 characters long
