@@ -6,7 +6,6 @@ Future<Response> onRequest(RequestContext context) async {
   final handler = webSocketHandler(
     (channel, protocol) {
       logger.d('Connected to WebSocket channel: $channel');
-
       channel.stream.listen((message) {
         logger.d('Received message: $message');
         channel.sink.add(message);
