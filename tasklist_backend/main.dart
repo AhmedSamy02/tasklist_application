@@ -24,9 +24,15 @@ Future<void> init(InternetAddress ip, int port) async {
   );
   logger.i('Registered recipes collection');
   getIt.registerSingleton<DbCollection>(
-    db.collection('lists'),
-    instanceName: 'lists',
+    db.collection('task_lists'),
+    instanceName: 'task_lists',
   );
+  logger.i('Registered task_lists collection');
+  getIt.registerSingleton<DbCollection>(
+    db.collection('tasks'),
+    instanceName: 'tasks',
+  );
+  logger.i('Registered tasks collection');
 }
 
 Future<HttpServer> run(Handler handler, InternetAddress ip, int port) async {
