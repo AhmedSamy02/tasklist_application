@@ -19,12 +19,12 @@ class TasklistRepository {
     return TaskList.fromMap(taskList!);
   }
 
-  Future<List<TaskList>> getTasklists(String userId) async {
+  Future<List<Map<String,dynamic>>> getTasklists(String userId) async {
     final taskLists = await getIt
         .get<DbCollection>(instanceName: 'task_lists')
         .find(where.eq('user_id', userId))
         .toList();
-    return taskLists.map((e) => TaskList.fromMap(e)).toList();
+    return taskLists;
   }
 
   Future<bool> checkTaskListExist(

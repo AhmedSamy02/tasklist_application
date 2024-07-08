@@ -11,8 +11,23 @@ Future<Response> onRequest(RequestContext context) async {
   final body = await request.json() as Map<String, dynamic>;
   switch (context.request.method) {
     case HttpMethod.get:
-      return Responses.notImplemented;
+      return Response.json(
+        body: {
+          'status_code': 200,
+          'message': 'Task Lists are fetched successfully',
+          'data': await context.read<TasklistRepository>().getTasklists(userId),
+        }
+      );
     case HttpMethod.put:
+    return _handlePutRequest(body,context,userId);
+    case HttpMethod.delete:
+      return Responses.notImplemented;
+    default:
+      return Responses.methodNotAllowed;
+  }
+}
+Future<Response> _handlePutRequest(Map<String,dynamic>body,RequestContext context,String userId)async{
+
       if (!body.containsKey('title') ||
           !body.containsKey('description') ||
           body['title'] == null ||
@@ -59,9 +74,5 @@ Future<Response> onRequest(RequestContext context) async {
         'Task List is created succesfully',
         taskList.toMap(),
       );
-    case HttpMethod.delete:
-      return Responses.notImplemented;
-    default:
-      return Responses.methodNotAllowed;
-  }
+    
 }
