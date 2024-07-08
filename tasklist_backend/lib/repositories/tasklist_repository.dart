@@ -34,4 +34,16 @@ class TasklistRepository {
         .findOne(where.eq('user_id', userId).eq('title', title));
     return taskList != null;
   }
+  Future<bool> deleteTaskList(String userId,String title)async{
+    final taskList = await getIt
+        .get<DbCollection>(instanceName: 'task_lists')
+        .findOne(where.eq('user_id', userId).eq('title', title));
+    if(taskList==null){
+      return false;
+    }
+    await getIt
+        .get<DbCollection>(instanceName: 'task_lists')
+        .remove(where.eq('user_id', userId).eq('title', title));
+    return true;
+  }
 }
