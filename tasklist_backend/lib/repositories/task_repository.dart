@@ -67,32 +67,32 @@ class TaskRepository {
   }
 
   Future<bool> completeTask({
-    required String listId,
+    required String taskId,
   }) async {
-    final task = await getIt
-        .get<DbCollection>(instanceName: 'tasks')
-        .findOne(where.eq('list_id', listId));
+    final task = await getIt.get<DbCollection>(instanceName: 'tasks').findOne(
+          where.eq('_id', ObjectId.fromHexString(taskId)),
+        );
     if (task == null) {
       return false;
     }
     await getIt.get<DbCollection>(instanceName: 'tasks').update(
-          where.eq('list_id', listId),
+          where.eq('_id', ObjectId.fromHexString(taskId)),
           modify.set('is_completed', true),
         );
     return true;
   }
 
   Future<bool> uncompleteTask({
-    required String listId,
+    required String taskId,
   }) async {
-    final task = await getIt
-        .get<DbCollection>(instanceName: 'tasks')
-        .findOne(where.eq('list_id', listId));
+    final task = await getIt.get<DbCollection>(instanceName: 'tasks').findOne(
+          where.eq('_id', ObjectId.fromHexString(taskId)),
+        );
     if (task == null) {
       return false;
     }
     await getIt.get<DbCollection>(instanceName: 'tasks').update(
-          where.eq('list_id', listId),
+          where.eq('_id', ObjectId.fromHexString(taskId)),
           modify.set('is_completed', false),
         );
     return true;
