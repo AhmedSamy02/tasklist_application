@@ -35,6 +35,7 @@ bool checkEmailAcceptance(String email) {
   }
   return false;
 }
+
 bool checkKeyFoundOrEmpty(Map<String, dynamic> body, String key) {
   if (!body.containsKey(key) || body[key] == null || body[key] == '') {
     return false;
@@ -73,6 +74,15 @@ Response successResponse(String message, Map<String, dynamic> data) {
     },
   );
 }
+Response succesResponseWithList(String message, List<Map<String, dynamic>> data) {
+  return Response.json(
+    body: {
+      'status_code': 200,
+      'message': message,
+      'data': data,
+    },
+  );
+}
 
 Response badRequestResponse(String message) {
   return Response.json(
@@ -101,6 +111,13 @@ Response successResponseWithPage(
       },
     },
   );
+}
+
+Map<String,dynamic>? checkBody(dynamic body) {
+  if (body == null || body is! Map<String, dynamic>) {
+    return null;
+  }
+  return body;
 }
 
 int abs(int number) {

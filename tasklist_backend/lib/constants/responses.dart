@@ -1,6 +1,20 @@
 import 'package:dart_frog/dart_frog.dart';
 
 class Responses {
+  static Response queryParameterNotProvided = Response.json(
+    body: {
+      'status_code': 400,
+      'message': 'Required Query parameters not provided',
+    },
+    statusCode: 400,
+  );
+  static Response bodyNotProvided = Response.json(
+    body: {
+      'status_code': 400,
+      'message': 'Required body not provided',
+    },
+    statusCode: 400,
+  );
   static Response methodNotAllowed = Response.json(
     body: {'status_code': 405, 'message': 'Method not allowed'},
     statusCode: 405,
@@ -18,7 +32,7 @@ class Responses {
     statusCode: 400,
   );
   static Response unauthorized = Response.json(
-    body: {'status_code': 401, 'message': 'Unauthorized'},
+    body: {'status_code': 401, 'message': 'User is Unauthorized'},
     statusCode: 401,
   );
   static Response forbidden = Response.json(

@@ -1,6 +1,8 @@
 include: package:very_good_analysis/analysis_options.5.1.0.yaml
 analyzer:
   errors:
+    avoid_dynamic_calls: ignore
+    inference_failure_on_function_invocation: ignore
     lines_longer_than_80_chars: ignore
     no_default_cases: ignore
     public_member_api_docs: ignore

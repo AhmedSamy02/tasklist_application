@@ -1,6 +1,7 @@
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
 import 'package:mongo_dart/mongo_dart.dart';
+import 'package:tasklist_backend/constants/config.dart';
 import 'package:tasklist_backend/constants/values.dart';
 import 'package:tasklist_backend/models/user.dart';
 
@@ -35,13 +36,17 @@ class Authenticator {
   }
 
   Future<User?> verifyToken(String token) async {
-    final jwt = JWT.verify(token, SecretKey(secretKey));
-    return getIt
-        .get<DbCollection>(instanceName: 'users')
-        .findOne(
-          where.id(ObjectId.fromHexString(jwt.payload['id'] as String)),
-        )
-        .then((value) => value != null ? User.fromMap(value) : null);
+    try {
+      final jwt = JWT.verify(token, SecretKey(secretKey));
+      return getIt
+          .get<DbCollection>(instanceName: 'users')
+          .findOne(
+            where.id(ObjectId.fromHexString(jwt.payload['id'] as String)),
+          )
+          .then((value) => value != null ? User.fromMap(value) : null);
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<Response> generateOTP(String email) async {
@@ -51,7 +56,7 @@ class Authenticator {
         'email': email,
         'type': 'alphanumeric',
         'organization': 'Tasklist App',
-        'subject': 'OTP Verification'
+        'subject': 'OTP Verification',
       },
     );
     return response;
@@ -67,12 +72,14 @@ class Authenticator {
     );
     return response;
   }
+
   Future<User?> findUserByEmail(String email) async {
     final userCollection = getIt.get<DbCollection>(instanceName: 'users');
     return userCollection
         .findOne(where.eq('email', email))
         .then((value) => value != null ? User.fromMap(value) : null);
   }
+
   Future<User> createUser({
     required String email,
     required String password,
@@ -90,7 +97,8 @@ class Authenticator {
     });
     return User.fromMap(user);
   }
-  Future<bool>resetPassword(String email, String password) async {
+
+  Future<bool> resetPassword(String email, String password) async {
     final userCollection = getIt.get<DbCollection>(instanceName: 'users');
     final user = await userCollection.findOne(where.eq('email', email));
     if (user == null) {

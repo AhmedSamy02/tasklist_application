@@ -9,5 +9,4 @@ Logger logger = Logger(
     lineLength: 50,
   ),
 );
-const String secretKey = 'secret_key';
 const String kDbLink = 'mongodb://localhost:27017/dart_frog';

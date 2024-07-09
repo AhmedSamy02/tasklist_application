@@ -14,4 +14,4 @@ build/
 
 # Test related files
 coverage/
-lib/constants/jwt_constants.dart
+lib/constants/config.dart
