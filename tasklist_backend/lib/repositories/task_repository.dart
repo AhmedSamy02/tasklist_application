@@ -30,17 +30,17 @@ class TaskRepository {
 
   Future<bool> deleteTask({
     required String listId,
-    required String title,
+    required String taskId,
   }) async {
-    final task = await getIt
-        .get<DbCollection>(instanceName: 'tasks')
-        .findOne(where.eq('list_id', listId).eq('title', title));
+    final task = await getIt.get<DbCollection>(instanceName: 'tasks').findOne(
+          where.eq('list_id', listId).eq('_id', ObjectId.fromHexString(taskId)),
+        );
     if (task == null) {
       return false;
     }
-    await getIt
-        .get<DbCollection>(instanceName: 'tasks')
-        .remove(where.eq('list_id', listId).eq('title', title));
+    await getIt.get<DbCollection>(instanceName: 'tasks').remove(
+          where.eq('list_id', listId).eq('_id', ObjectId.fromHexString(taskId)),
+        );
     return true;
   }
 

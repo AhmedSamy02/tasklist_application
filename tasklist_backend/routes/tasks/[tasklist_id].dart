@@ -127,18 +127,18 @@ Future<Response> _createTask(RequestContext context, String tasklistId) async {
 
 Future<Response> _deleteTask(RequestContext context, String tasklistId) async {
   final body = await context.request.json() as Map<String, dynamic>;
-  if (!checkKeyFoundOrEmpty(body, 'title')) {
+  if (!checkKeyFoundOrEmpty(body, 'id')) {
     return Response.json(
       body: {
         'status_code': 400,
-        'message': 'Title is required',
+        'message': 'ID is required',
       },
       statusCode: 400,
     );
   }
   if (await context
       .read<TaskRepository>()
-      .deleteTask(listId: tasklistId, title: body['title'] as String)) {
+      .deleteTask(listId: tasklistId, taskId: body['id'] as String)) {
     return Response.json(
       body: {
         'status_code': 200,
