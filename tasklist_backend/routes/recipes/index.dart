@@ -2,12 +2,11 @@ import 'dart:math';
 
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mongo_dart/mongo_dart.dart';
+import 'package:tasklist_backend/constants/methods.dart';
+import 'package:tasklist_backend/constants/responses.dart';
+import 'package:tasklist_backend/constants/values.dart';
 
-import '../../lib/constants/methods.dart';
-import '../../lib/constants/responses.dart';
-import '../../lib/constants/values.dart';
-
-Future<Response> onRequest(RequestContext context) async{
+Future<Response> onRequest(RequestContext context) async {
   if (context.request.method != HttpMethod.get) {
     return Responses.methodNotAllowed;
   }
@@ -22,7 +21,7 @@ Future<Response> onRequest(RequestContext context) async{
       .get<DbCollection>(instanceName: 'recipes')
       .find(where.skip(pageLimit * abs(pageNumber)).limit(pageLimit))
       .toList();
-      for (final element in data) {
+  for (final element in data) {
     final id = element['_id'] as ObjectId;
     element['_id'] = id.oid;
   }
