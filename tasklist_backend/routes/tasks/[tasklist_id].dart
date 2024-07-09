@@ -3,16 +3,16 @@ import 'package:tasklist_backend/constants/methods.dart';
 import 'package:tasklist_backend/constants/responses.dart';
 import 'package:tasklist_backend/repositories/task_repository.dart';
 
-Future<Response> onRequest(RequestContext context, String tasklistId) async {
+Future<Response> onRequest(RequestContext context, String tasklist_id) async {
   switch (context.request.method) {
     case HttpMethod.get:
-      return _getAllTasks(context, tasklistId);
+      return _getAllTasks(context, tasklist_id);
     case HttpMethod.delete:
-      return _deleteTask(context, tasklistId);
+      return _deleteTask(context, tasklist_id);
     case HttpMethod.post:
-      return _createTask(context, tasklistId);
+      return _createTask(context, tasklist_id);
     case HttpMethod.put:
-      return _updateTask(context, tasklistId);
+      return _updateTask(context, tasklist_id);
     default:
       return Responses.methodNotAllowed;
   }
