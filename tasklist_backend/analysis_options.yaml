@@ -5,6 +5,7 @@ analyzer:
     inference_failure_on_function_invocation: ignore
     lines_longer_than_80_chars: ignore
     no_default_cases: ignore
+    parameter_assignments: ignore
     public_member_api_docs: ignore
   exclude:
     - build/**

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:tasklist_backend/constants/methods.dart';
 import 'package:tasklist_backend/constants/values.dart';
@@ -16,14 +18,17 @@ class RecipesRepository {
   }
 
   Future<List<Map<String, dynamic>>> filterRecipies({
-    required int page,
-    required int limit,
+    int? page,
+    int? limit,
     String? cuisine,
     String? course,
     String? diet,
     int? prepTime,
     int? cookTime,
   }) async {
+    limit = limit ?? 10;
+    limit = max(5, min(20, limit));
+    page = page ?? 0;
     final data = await getIt
         .get<DbCollection>(instanceName: 'recipes')
         .find(
@@ -77,12 +82,11 @@ class RecipesRepository {
         .distinct('course');
     final diet =
         await getIt.get<DbCollection>(instanceName: 'recipes').distinct('diet');
-        
+
     return {
       'cuisine': cuisine['values'],
       'course': course['values'],
       'diet': diet['values'],
-
     };
   }
 }
