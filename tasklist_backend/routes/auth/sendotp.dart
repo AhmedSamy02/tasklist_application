@@ -22,6 +22,15 @@ Future<Response> onRequest(RequestContext context) async {
       statusCode: 400,
     );
   }
+  if (await context.read<Authenticator>().findUserByEmail(email) == null) {
+    return Response.json(
+      body: {
+        'status_code': 404,
+        'message': "Email isn't registered",
+      },
+      statusCode: 404,
+    );
+  }
   final sent = await context.read<Authenticator>().generateOTP(email);
   return Response.json(
     body: sent.data,

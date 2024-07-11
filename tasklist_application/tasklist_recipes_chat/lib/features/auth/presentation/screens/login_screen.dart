@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tasklist_recipes_chat/core/constants/assets.dart';
+import 'package:tasklist_recipes_chat/core/constants/screens.dart';
+import 'package:tasklist_recipes_chat/core/constants/values.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/auth_elevated_button.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/email_textfield.dart';
-import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/login_paragraph.dart';
+import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/auth_paragraph.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/password_textfield.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -14,7 +17,7 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    final controller = AuthController();
+    final controller = getit.get<AuthController>();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(18.0),
@@ -27,7 +30,12 @@ class LoginScreen extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 28.sp),
-                child: const LoginParagraph(),
+                child: const AuthParagraph(
+                  title: 'Login',
+                  subtitle: 'Please enter your email and password',
+                  titleFontSize: 48,
+                  subtitleFontSize: 18,
+                ),
               ),
               Form(
                 key: _formKey,
@@ -65,7 +73,10 @@ class LoginScreen extends StatelessWidget {
                       color: Colors.white,
                       width: 160.w,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(kEmailScreen, arguments: true);
+                        },
                         child: Text(
                           'Forget password ?',
                           style:
@@ -78,34 +89,17 @@ class LoginScreen extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 15.sp),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 50.sp,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        controller.login(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                          context: context,
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                child: AuthElevatedButton(
+                  text: 'Login',
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      controller.login(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                        context: context,
+                      );
+                    }
+                  },
                 ),
               )
             ],

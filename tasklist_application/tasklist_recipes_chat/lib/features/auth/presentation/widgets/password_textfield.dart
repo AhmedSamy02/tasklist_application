@@ -24,6 +24,8 @@ class _PasswordTextfieldState extends State<PasswordTextfield> {
       keyboardType: TextInputType.visiblePassword,
       obscureText: !shown,
       maxLines: 1,
+      autovalidateMode:
+          widget.validator != null ? AutovalidateMode.onUserInteraction : null,
       textInputAction: widget.textInputAction,
       decoration: InputDecoration(
           focusedBorder: const OutlineInputBorder(

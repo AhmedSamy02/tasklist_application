@@ -54,7 +54,7 @@ class Authenticator {
       'https://otp-service-beta.vercel.app/api/otp/generate',
       data: {
         'email': email,
-        'type': 'alphanumeric',
+        'type': 'numeric',
         'organization': 'Tasklist App',
         'subject': 'OTP Verification',
       },

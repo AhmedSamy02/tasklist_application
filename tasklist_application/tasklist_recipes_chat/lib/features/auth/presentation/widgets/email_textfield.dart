@@ -6,10 +6,12 @@ class EmailTextfield extends StatelessWidget {
     required this.emailController,
     this.initialValue,
     required this.enabled,
+    this.textInputAction,
   });
   final TextEditingController emailController;
   final String? initialValue;
   final bool enabled;
+  final TextInputAction? textInputAction;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -17,17 +19,19 @@ class EmailTextfield extends StatelessWidget {
         if (value != null && value.isEmpty) {
           return 'Please enter your email';
         }
-        if(value !=null && !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)){
+        if (value != null &&
+            !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
           return 'Please enter a valid email';
         }
         return null;
       },
+      
       initialValue: initialValue,
       controller: emailController,
       enabled: enabled,
       keyboardType: TextInputType.emailAddress,
       maxLines: 1,
-      textInputAction: TextInputAction.next,
+      textInputAction: textInputAction ?? TextInputAction.next,
       decoration: const InputDecoration(
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.indigo, width: 2.0),
@@ -42,7 +46,7 @@ class EmailTextfield extends StatelessWidget {
             ),
           ),
           labelText: 'Email',
-          floatingLabelStyle: TextStyle(color: Colors.indigo, fontSize: 18)),
+          floatingLabelStyle: TextStyle( fontSize: 18)),
     );
   }
 }

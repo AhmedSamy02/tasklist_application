@@ -1,10 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:tasklist_recipes_chat/core/constants/screens.dart';
 import 'package:tasklist_recipes_chat/core/constants/values.dart';
 import 'package:tasklist_recipes_chat/core/errors/server_failure.dart';
 import 'package:tasklist_recipes_chat/features/auth/data/repositories/auth_repo_impl.dart';
 import 'package:tasklist_recipes_chat/features/auth/domain/use_cases/login_use_case.dart';
+import 'package:tasklist_recipes_chat/features/auth/domain/use_cases/reset_password_use_case.dart';
+import 'package:tasklist_recipes_chat/features/auth/domain/use_cases/send_otp_use_case.dart';
+import 'package:tasklist_recipes_chat/features/auth/domain/use_cases/verify_otp_use_case.dart';
 
 class AuthController {
   Future<void> login({
@@ -59,6 +65,152 @@ class AuthController {
           text: 'Login successful',
         );
         // Navigator.pushNamed(context, kHomeScreen);
+      },
+    );
+  }
+
+  Future<void> sendOTP({
+    required BuildContext context,
+    required String email,
+    required bool forget,
+  }) async {
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.loading,
+        title: 'Loading',
+        text: 'Please wait...');
+    final useCase = SendOtpUseCase(authRepo: getit.get<AuthRepoImpl>());
+    final result = await useCase.call(email);
+    Navigator.pop(context);
+    result.fold(
+      (failure) {
+        switch (failure.runtimeType) {
+          case const (ServerFailure):
+            final message = (failure as ServerFailure).message;
+            QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Server Error',
+                text: message);
+            break;
+          default:
+            QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Unexpected Error',
+                text: failure.message);
+        }
+      },
+      (otp) async {
+        await QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          title: 'Success',
+          text: 'OTP sent to your email, Redirecting...',
+          showConfirmBtn: false,
+          barrierDismissible: false,
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+        Navigator.pushNamed(context, kOtpScreen, arguments: {
+          'email': email,
+          'forget': forget,
+        });
+      },
+    );
+  }
+
+  Future<void> verifyOtp({
+    required BuildContext context,
+    required String email,
+    required String otp,
+    required bool forget,
+    required TextEditingController controller,
+  }) async {
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.loading,
+        title: 'Loading',
+        text: 'Please wait...');
+    final useCase = VerifyOtpUseCase(authRepo: getit.get<AuthRepoImpl>());
+    final result = await useCase.call(email, otp);
+    Navigator.pop(context);
+    result.fold(
+      (failure) {
+        switch (failure.runtimeType) {
+          case const (ServerFailure):
+            final message = (failure as ServerFailure).message;
+            QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Server Error',
+                text: message);
+            break;
+          default:
+            QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Unexpected Error',
+                text: failure.message);
+        }
+      },
+      (otp) async {
+        await QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          title: 'Success',
+          text: 'OTP verified, Redirecting...',
+          showConfirmBtn: false,
+          barrierDismissible: false,
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+        if (forget) {
+          Navigator.pushNamed(context, kResetPasswordScreen, arguments: email);
+        }else{
+          Navigator.pushNamed(context, kRegisterScreen, arguments: email);
+        }
+      },
+    );
+  }
+
+  Future<void> resetPassword({
+    required BuildContext context,
+    required String email,
+    required String password,
+    required String newPassword,
+  }) async {
+    final useCase = ResetPasswordUseCase(authRepo: getit.get<AuthRepoImpl>());
+    final result = await useCase.call(email, newPassword);
+    Navigator.pop(context);
+    result.fold(
+      (failure) {
+        switch (failure.runtimeType) {
+          case const (ServerFailure):
+            final message = (failure as ServerFailure).message;
+            QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Server Error',
+                text: message);
+            break;
+          default:
+            QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Unexpected Error',
+                text: failure.message);
+        }
+      },
+      (finish) async {
+        await QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          title: 'Success',
+          text: 'Password reset successful, Redirecting...',
+          showConfirmBtn: false,
+          barrierDismissible: false,
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+        Navigator.popUntil(context, ModalRoute.withName(kLoginScreen));
       },
     );
   }

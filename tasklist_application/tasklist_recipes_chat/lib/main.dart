@@ -3,8 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tasklist_recipes_chat/core/constants/methods.dart';
 import 'package:tasklist_recipes_chat/core/constants/screens.dart';
+import 'package:tasklist_recipes_chat/features/auth/presentation/screens/email_screen.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/screens/login_screen.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/screens/onboarding_screen.dart';
+import 'package:tasklist_recipes_chat/features/auth/presentation/screens/otp_screen.dart';
+import 'package:tasklist_recipes_chat/features/auth/presentation/screens/reset_password_screen.dart';
 
 void main() {
   initializeSingletons();
@@ -26,10 +29,13 @@ class MainApp extends StatelessWidget {
           primarySwatch: Colors.indigo,
           textTheme: GoogleFonts.robotoTextTheme(),
         ),
-        initialRoute: kLoginScreen,
+        initialRoute: kResetPasswordScreen,
         routes: {
           kOnboardingScreen: (context) => const OnboardingScreen(),
-          kLoginScreen: (context) => LoginScreen()
+          kLoginScreen: (context) => LoginScreen(),
+          kEmailScreen: (context) => const EmailScreen(),
+          kOtpScreen:(context)=> const OtpScreen(),
+          kResetPasswordScreen: (context) => const ResetPasswordScreen(),
         },
       ),
     );

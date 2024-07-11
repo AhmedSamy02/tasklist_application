@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:tasklist_recipes_chat/core/constants/values.dart';
 import 'package:tasklist_recipes_chat/core/errors/failure.dart';
 
 class ServerFailure extends Failure {
   ServerFailure(String message) : super(message: message);
   factory ServerFailure.fromDio(DioException e) {
+    logger.e('Server Failure : ${e.response}');
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
         return ServerFailure('Connection Timeout');
@@ -28,13 +30,15 @@ class ServerFailure extends Failure {
   factory ServerFailure.fromResponse(int statusCode, dynamic response) {
     switch (statusCode) {
       case 400:
-        return ServerFailure(response['message']);
+        return ServerFailure(
+            response is Map<String, dynamic> ? response['message'] : response);
       case 401:
         return ServerFailure('Request is unauthorized');
       case 403:
         return ServerFailure('Request Forbidden');
       case 404:
-        return ServerFailure('Server Not Found');
+        return ServerFailure(
+            response is Map<String, dynamic> ? response['message'] : response);
       case 500:
         return ServerFailure('Oops there\'s an internal server error');
       case 503:

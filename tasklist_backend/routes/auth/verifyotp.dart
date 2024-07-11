@@ -1,7 +1,10 @@
 import 'package:dart_frog/dart_frog.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:tasklist_backend/constants/responses.dart';
+import 'package:tasklist_backend/constants/values.dart';
 import 'package:tasklist_backend/repositories/authenticator.dart';
 
-Response onRequest(RequestContext context) {
+Future<Response> onRequest(RequestContext context) async {
   final email = context.request.uri.queryParameters['email'];
   if (email == null || email.isEmpty) {
     return Response.json(
@@ -22,8 +25,23 @@ Response onRequest(RequestContext context) {
       statusCode: 400,
     );
   }
-  final verified = context.read<Authenticator>().verifyOTP(email, otp);
-  return Response.json(
-    body: verified,
-  );
+  try {
+    final verified = await context.read<Authenticator>().verifyOTP(email, otp);
+    return Response.json(
+      body: verified.data,
+    );
+  } on dio.DioException catch (e) {
+    final response = e.response;
+    logger.e('Dio Exception :- ${response?.data['error']}');
+    return Response.json(
+      body: {
+        'status_code': response?.statusCode??400,
+        'message': response?.data['error'],
+      },
+      statusCode: response?.statusCode ?? 400,
+    );
+  } catch (e) {
+    logger.e('Internal Server Error :- $e');
+    return Responses.internalServerError;
+  }
 }

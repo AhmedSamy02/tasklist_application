@@ -6,3 +6,4 @@ const kOtpScreen = 'otp_screen';
 const kHomeScreen = 'home_screen';
 const kOnboardingScreen = 'onboarding_screen';
 const kChatScreen = 'chat_screen';
+const kResetPasswordScreen = 'reset_password_screen';
