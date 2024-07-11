@@ -13,6 +13,15 @@ class EmailTextfield extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: (value) {
+        if (value != null && value.isEmpty) {
+          return 'Please enter your email';
+        }
+        if(value !=null && !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)){
+          return 'Please enter a valid email';
+        }
+        return null;
+      },
       initialValue: initialValue,
       controller: emailController,
       enabled: enabled,

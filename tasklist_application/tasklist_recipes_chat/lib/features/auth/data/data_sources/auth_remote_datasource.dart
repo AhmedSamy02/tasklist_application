@@ -17,9 +17,9 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   AuthRemoteDatasourceImpl({required this.dio});
   @override
   Future<User> login(String email, String password) async {
-    final response = await dio.post('$baseURL$endpoint/login',
+    final response = await dio.post('$baseURL${endpoint}login',
         data: {'email': email, 'password': password});
-    return User.fromJson(response.data);
+    return User.fromJson(response.data['data']);
   }
 
   @override

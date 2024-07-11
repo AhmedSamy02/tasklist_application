@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tasklist_recipes_chat/core/constants/assets.dart';
+import 'package:tasklist_recipes_chat/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/email_textfield.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/login_paragraph.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/password_textfield.dart';
@@ -9,10 +10,11 @@ import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/passwor
 class LoginScreen extends StatelessWidget {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
   LoginScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    final controller = AuthController();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(18.0),
@@ -20,25 +22,34 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 350.sp,
+                height: 330.sp,
                 child: SvgPicture.asset(kLoginAsset),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 28.sp),
                 child: const LoginParagraph(),
               ),
-              Column(
-                children: [
-                  EmailTextfield(
-                      emailController: _emailController, enabled: true),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18.0),
-                    child: PasswordTextfield(
-                      controller: _passwordController,
-                      textInputAction: TextInputAction.done,
-                    ),
-                  )
-                ],
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    EmailTextfield(
+                        emailController: _emailController, enabled: true),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 18.0),
+                      child: PasswordTextfield(
+                        controller: _passwordController,
+                        textInputAction: TextInputAction.done,
+                        validator: (value) {
+                          if (value != null && value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                      ),
+                    )
+                  ],
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 18.sp),
@@ -71,7 +82,15 @@ class LoginScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 50.sp,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        controller.login(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                          context: context,
+                        );
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       shape: RoundedRectangleBorder(

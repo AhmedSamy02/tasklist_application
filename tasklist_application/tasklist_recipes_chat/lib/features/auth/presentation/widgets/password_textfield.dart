@@ -5,9 +5,11 @@ class PasswordTextfield extends StatefulWidget {
     super.key,
     required this.controller,
     required this.textInputAction,
+    this.validator,
   });
   final TextEditingController controller;
   final TextInputAction textInputAction;
+  final String? Function(String? value)? validator;
   @override
   State<PasswordTextfield> createState() => _PasswordTextfieldState();
 }
@@ -16,7 +18,8 @@ class _PasswordTextfieldState extends State<PasswordTextfield> {
   bool shown = false;
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: widget.validator,
       controller: widget.controller,
       keyboardType: TextInputType.visiblePassword,
       obscureText: !shown,

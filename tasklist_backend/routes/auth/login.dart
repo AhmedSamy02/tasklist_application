@@ -27,12 +27,8 @@ Future<Response> onRequest(RequestContext context) async {
         password: password,
       );
   if (user == null) {
-    return Response.json(
-      body: {
-        'status_code': 401,
-        'message': 'Invalid email or password',
-      },
-      statusCode: 401,
+    return badRequestResponse(
+      'Invalid email or password',
     );
   }
 
