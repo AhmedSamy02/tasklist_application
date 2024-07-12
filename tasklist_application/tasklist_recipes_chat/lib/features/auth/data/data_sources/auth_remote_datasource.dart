@@ -7,7 +7,7 @@ abstract class AuthRemoteDatasource {
   Future<void> register(String firstName, String lastName, String gender,
       String email, String password);
   Future<void> resetPassword(String email, String newPassword);
-  Future<void> sendOTP(String email);
+  Future<void> sendOTP(String email, bool forget);
   Future<void> verifyOTP(String email, String otp);
 }
 
@@ -25,7 +25,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   @override
   Future<void> register(String firstName, String lastName, String gender,
       String email, String password) async {
-    await dio.post('$baseURL${endpoint}register', data: {
+    await dio.post('$baseURL${endpoint}signup', data: {
       'email': email,
       'password': password,
       'gender': gender,
@@ -35,9 +35,9 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   }
 
   @override
-  Future<void> sendOTP(String email) async {
-    await dio
-        .post('$baseURL${endpoint}sendotp', queryParameters: {'email': email});
+  Future<void> sendOTP(String email, bool forget) async {
+    await dio.post('$baseURL${endpoint}sendotp',
+        queryParameters: {'email': email, 'forget': forget ? 'true' : 'false'});
   }
 
   @override

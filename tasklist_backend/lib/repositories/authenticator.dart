@@ -80,7 +80,7 @@ class Authenticator {
         .then((value) => value != null ? User.fromMap(value) : null);
   }
 
-  Future<User> createUser({
+  Future<void> createUser({
     required String email,
     required String password,
     required String firstName,
@@ -88,14 +88,13 @@ class Authenticator {
     required String gender,
   }) async {
     final gen = gender.toLowerCase() == 'male' ? 'Male' : 'Female';
-    final user = await getIt.get<DbCollection>(instanceName: 'users').insert({
+    await getIt.get<DbCollection>(instanceName: 'users').insert({
       'first_name': firstName,
       'last_name': lastName,
       'gender': gen,
       'email': email,
       'password': password,
     });
-    return User.fromMap(user);
   }
 
   Future<bool> resetPassword(String email, String password) async {

@@ -8,6 +8,7 @@ import 'package:tasklist_recipes_chat/core/constants/values.dart';
 import 'package:tasklist_recipes_chat/core/errors/server_failure.dart';
 import 'package:tasklist_recipes_chat/features/auth/data/repositories/auth_repo_impl.dart';
 import 'package:tasklist_recipes_chat/features/auth/domain/use_cases/login_use_case.dart';
+import 'package:tasklist_recipes_chat/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:tasklist_recipes_chat/features/auth/domain/use_cases/reset_password_use_case.dart';
 import 'package:tasklist_recipes_chat/features/auth/domain/use_cases/send_otp_use_case.dart';
 import 'package:tasklist_recipes_chat/features/auth/domain/use_cases/verify_otp_use_case.dart';
@@ -80,7 +81,7 @@ class AuthController {
         title: 'Loading',
         text: 'Please wait...');
     final useCase = SendOtpUseCase(authRepo: getit.get<AuthRepoImpl>());
-    final result = await useCase.call(email);
+    final result = await useCase.call(email,false);
     Navigator.pop(context);
     result.fold(
       (failure) {
@@ -165,7 +166,7 @@ class AuthController {
         );
         if (forget) {
           Navigator.pushNamed(context, kResetPasswordScreen, arguments: email);
-        }else{
+        } else {
           Navigator.pushNamed(context, kRegisterScreen, arguments: email);
         }
       },
@@ -206,6 +207,57 @@ class AuthController {
           type: QuickAlertType.success,
           title: 'Success',
           text: 'Password reset successful, Redirecting...',
+          showConfirmBtn: false,
+          barrierDismissible: false,
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+        Navigator.popUntil(context, ModalRoute.withName(kLoginScreen));
+      },
+    );
+  }
+
+  Future<void> register({
+    required BuildContext context,
+    required String email,
+    required String firstName,
+    required String lastName,
+    required String password,
+    required String gender,
+  }) async {
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.loading,
+        title: 'Loading',
+        text: 'Please wait...');
+    final useCase = RegisterUseCase(authRepo: getit.get<AuthRepoImpl>());
+    final result =
+        await useCase.call(firstName, lastName, email, password, gender);
+    Navigator.pop(context);
+    result.fold(
+      (failure) {
+        switch (failure.runtimeType) {
+          case const (ServerFailure):
+            final message = (failure as ServerFailure).message;
+            QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Server Error',
+                text: message);
+            break;
+          default:
+            QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Unexpected Error',
+                text: failure.message);
+        }
+      },
+      (finish) async {
+        await QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          title: 'Success',
+          text: 'Registration successful, Redirecting...',
           showConfirmBtn: false,
           barrierDismissible: false,
           autoCloseDuration: const Duration(seconds: 3),

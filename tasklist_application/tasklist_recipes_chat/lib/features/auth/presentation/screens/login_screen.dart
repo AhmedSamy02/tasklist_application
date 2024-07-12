@@ -6,6 +6,7 @@ import 'package:tasklist_recipes_chat/core/constants/screens.dart';
 import 'package:tasklist_recipes_chat/core/constants/values.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/auth_elevated_button.dart';
+import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/auth_outlinded_elevated_button.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/email_textfield.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/auth_paragraph.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/widgets/password_textfield.dart';
@@ -24,9 +25,9 @@ class LoginScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: 330.sp,
-                child: SvgPicture.asset(kLoginAsset),
+              SvgPicture.asset(
+                kLoginAsset,
+                height: 275.h,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 28.sp),
@@ -44,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                     EmailTextfield(
                         emailController: _emailController, enabled: true),
                     Padding(
-                      padding: const EdgeInsets.only(top: 18.0),
+                      padding: EdgeInsets.only(top: 18.sp),
                       child: PasswordTextfield(
                         controller: _passwordController,
                         textInputAction: TextInputAction.done,
@@ -88,7 +89,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 15.sp),
+                padding: EdgeInsets.only(top: 12.sp),
                 child: AuthElevatedButton(
                   text: 'Login',
                   onPressed: () {
@@ -99,6 +100,16 @@ class LoginScreen extends StatelessWidget {
                         context: context,
                       );
                     }
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 12.sp),
+                child: AuthOutlinedElevatedButton(
+                  text: 'Register',
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(kEmailScreen, arguments: false);
                   },
                 ),
               )

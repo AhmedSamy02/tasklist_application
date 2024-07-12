@@ -25,6 +25,7 @@ class ResetPasswordScreen extends StatelessWidget {
         leading: const BackButton(
           color: Colors.black,
         ),
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: EdgeInsets.all(18.sp),
@@ -57,14 +58,15 @@ class ResetPasswordScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 18.sp),
                       child: PasswordTextfield(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your password';
-                          } else if (value != passwordController.text) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your password';
+                            } else if (value != passwordController.text) {
+                              return 'Passwords do not match';
+                            }
+                            return null;
+                          },
+                          labelText: 'Confirm Password',
                           controller: confirmPasswordController,
                           textInputAction: TextInputAction.done),
                     ),
@@ -74,8 +76,7 @@ class ResetPasswordScreen extends StatelessWidget {
               AuthElevatedButton(
                   text: 'Reset Password',
                   onPressed: () {
-                    if (
-                        formKey.currentState!.validate() &&
+                    if (formKey.currentState!.validate() &&
                         passwordFancyController.areAllRulesValidated) {
                       final controller = getit.get<AuthController>();
                       controller.resetPassword(

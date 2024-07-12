@@ -88,6 +88,7 @@ class FancyAuthField extends StatelessWidget {
             ? null
             : 'Validation rules aren\'t met';
       },
+      semanticsLabel: 'Password',
       validationRules: {
         DigitValidationRule(),
         UppercaseValidationRule(),
@@ -99,11 +100,8 @@ class FancyAuthField extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        hintText: 'Password',
-        hintStyle: TextStyle(
-          color: Colors.grey,
-          fontSize: 18.sp,
-        ),
+        label: const Text('Password'),
+        
       ),
     );
   }

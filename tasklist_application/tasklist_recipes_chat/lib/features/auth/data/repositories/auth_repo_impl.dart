@@ -52,9 +52,9 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, void>> sendOTP(String email) async {
+  Future<Either<Failure, void>> sendOTP(String email,bool forget) async {
     try {
-      await remoteDataSource.sendOTP(email);
+      await remoteDataSource.sendOTP(email,forget);
       return right(null);
     } on DioException catch (e) {
       return left(ServerFailure.fromDio(e));

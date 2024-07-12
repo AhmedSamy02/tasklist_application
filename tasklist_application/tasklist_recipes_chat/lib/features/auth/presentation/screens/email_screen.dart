@@ -23,6 +23,7 @@ class EmailScreen extends StatelessWidget {
         leading: const BackButton(
           color: Colors.black,
         ),
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: EdgeInsets.all(18.sp),

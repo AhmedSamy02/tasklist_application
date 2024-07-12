@@ -3,12 +3,23 @@ import 'package:tasklist_backend/constants/methods.dart';
 import 'package:tasklist_backend/repositories/authenticator.dart';
 
 Future<Response> onRequest(RequestContext context) async {
-  final email = context.request.uri.queryParameters['email'];
+  final request = context.request;
+  final email = request.uri.queryParameters['email'];
+  final forget = request.uri.queryParameters['forget'];
   if (email == null || email.isEmpty) {
     return Response.json(
       body: {
         'status_code': 400,
         'message': 'Email is required',
+      },
+      statusCode: 400,
+    );
+  }
+  if(forget ==null){
+    return Response.json(
+      body: {
+        'status_code': 400,
+        'message': 'Forget is required',
       },
       statusCode: 400,
     );
@@ -22,7 +33,7 @@ Future<Response> onRequest(RequestContext context) async {
       statusCode: 400,
     );
   }
-  if (await context.read<Authenticator>().findUserByEmail(email) == null) {
+  if (forget=='true'&& await context.read<Authenticator>().findUserByEmail(email) == null) {
     return Response.json(
       body: {
         'status_code': 404,

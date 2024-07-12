@@ -7,6 +7,7 @@ import 'package:tasklist_recipes_chat/features/auth/presentation/screens/email_s
 import 'package:tasklist_recipes_chat/features/auth/presentation/screens/login_screen.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/screens/onboarding_screen.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/screens/otp_screen.dart';
+import 'package:tasklist_recipes_chat/features/auth/presentation/screens/register_screen.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/screens/reset_password_screen.dart';
 
 void main() {
@@ -29,13 +30,14 @@ class MainApp extends StatelessWidget {
           primarySwatch: Colors.indigo,
           textTheme: GoogleFonts.robotoTextTheme(),
         ),
-        initialRoute: kResetPasswordScreen,
+        initialRoute: kLoginScreen,
         routes: {
           kOnboardingScreen: (context) => const OnboardingScreen(),
           kLoginScreen: (context) => LoginScreen(),
           kEmailScreen: (context) => const EmailScreen(),
           kOtpScreen:(context)=> const OtpScreen(),
           kResetPasswordScreen: (context) => const ResetPasswordScreen(),
+          kRegisterScreen: (context) => const RegisterScreen(),
         },
       ),
     );

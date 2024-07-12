@@ -1,4 +1,5 @@
 import 'package:dart_frog/dart_frog.dart';
+import 'package:tasklist_backend/constants/values.dart';
 
 bool checkMethod(RequestContext context, HttpMethod method) {
   if (context.request.method != method) {
@@ -8,11 +9,11 @@ bool checkMethod(RequestContext context, HttpMethod method) {
 }
 
 bool checkSignupDataProvided(Map<String, dynamic> body) {
-  if (body.containsKey('email') ||
-      body.containsKey('password') ||
-      body.containsKey('first_name') ||
-      body.containsKey('last_name') ||
-      body.containsKey('gender') ||
+  if (!body.containsKey('email') ||
+      !body.containsKey('password') ||
+      !body.containsKey('first_name') ||
+      !body.containsKey('last_name') ||
+      !body.containsKey('gender') ||
       body['email'] == null ||
       body['email'] == '' ||
       body['password'] == null ||
@@ -74,7 +75,9 @@ Response successResponse(String message, Map<String, dynamic> data) {
     },
   );
 }
-Response succesResponseWithList(String message, List<Map<String, dynamic>> data) {
+
+Response succesResponseWithList(
+    String message, List<Map<String, dynamic>> data) {
   return Response.json(
     body: {
       'status_code': 200,
@@ -113,7 +116,7 @@ Response successResponseWithPage(
   );
 }
 
-Map<String,dynamic>? checkBody(dynamic body) {
+Map<String, dynamic>? checkBody(dynamic body) {
   if (body == null || body is! Map<String, dynamic>) {
     return null;
   }

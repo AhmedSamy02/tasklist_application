@@ -17,6 +17,6 @@ class RegisterUseCase extends UseCaseWithFiveParams<void, String, String,
     String password,
     String gender,
   ) {
-    return authRepo.register(firstName, lastName, email, password, gender);
+    return authRepo.register(firstName, lastName, gender, email, password);
   }
 }

@@ -12,8 +12,9 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final email = 'nname1858@gmail.com';
-    final forget = true;
+    final data = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
+    final email = data['email'] as String;
+    final forget = data['forget']as bool;
     final pinController = TextEditingController();
     final defaultPinTheme = PinTheme(
       width: 56,
@@ -46,6 +47,7 @@ class OtpScreen extends StatelessWidget {
         leading: const BackButton(
           color: Colors.black,
         ),
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: EdgeInsets.all(18.sp),
