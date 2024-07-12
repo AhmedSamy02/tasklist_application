@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FullNameRow extends StatelessWidget {
-  const FullNameRow({super.key, required this.firstNameController, required this.lastNameController});
-final TextEditingController firstNameController;
-final TextEditingController lastNameController;
+  const FullNameRow(
+      {super.key,
+      required this.firstNameController,
+      required this.lastNameController});
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
   @override
   Widget build(BuildContext context) {
     return Row(

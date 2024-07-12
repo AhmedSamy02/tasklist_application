@@ -15,7 +15,8 @@ class OnboardingParagraph extends StatelessWidget {
       child: Column(
         children: [
           Text(title,
-              style: GoogleFonts.cookie(fontSize: 45, fontWeight: FontWeight.bold)),
+              style: GoogleFonts.cookie(
+                  fontSize: 45, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           Text(description, style: const TextStyle(fontSize: 18)),
         ],

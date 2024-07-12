@@ -4,7 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class FancyAuthField extends StatelessWidget {
-  const FancyAuthField({super.key, required this.passwordController, required this.facnyTextEditingController});
+  const FancyAuthField(
+      {super.key,
+      required this.passwordController,
+      required this.facnyTextEditingController});
   final TextEditingController passwordController;
   final FancyPasswordController facnyTextEditingController;
   @override
@@ -81,7 +84,7 @@ class FancyAuthField extends StatelessWidget {
       textInputAction: TextInputAction.next,
       passwordController: facnyTextEditingController,
       validator: (value) {
-        if (value == null|| value.isEmpty) {
+        if (value == null || value.isEmpty) {
           return 'Please enter your password';
         }
         return facnyTextEditingController.areAllRulesValidated
@@ -101,7 +104,6 @@ class FancyAuthField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         label: const Text('Password'),
-        
       ),
     );
   }

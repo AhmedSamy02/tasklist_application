@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AuthElevatedButton extends StatelessWidget {
   const AuthElevatedButton({
     super.key,
-    this.onPressed, required this.text,
+    this.onPressed,
+    required this.text,
   });
   final void Function()? onPressed;
   final String text;
@@ -23,7 +24,7 @@ class AuthElevatedButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style:const TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.white,

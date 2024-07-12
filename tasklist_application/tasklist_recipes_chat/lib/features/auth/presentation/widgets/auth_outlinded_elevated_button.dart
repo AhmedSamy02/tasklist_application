@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AuthOutlinedElevatedButton extends StatelessWidget {
   const AuthOutlinedElevatedButton({
     super.key,
-    required this.onPressed, required this.text,
+    required this.onPressed,
+    required this.text,
   });
   final void Function()? onPressed;
   final String text;

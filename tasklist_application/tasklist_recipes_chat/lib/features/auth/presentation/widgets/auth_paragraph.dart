@@ -5,7 +5,9 @@ class AuthParagraph extends StatelessWidget {
   const AuthParagraph({
     super.key,
     required this.title,
-    required this.subtitle, required this.titleFontSize, required this.subtitleFontSize,
+    required this.subtitle,
+    required this.titleFontSize,
+    required this.subtitleFontSize,
   });
   final String title;
   final String subtitle;
@@ -20,8 +22,8 @@ class AuthParagraph extends StatelessWidget {
           width: double.infinity,
           child: Text(
             title,
-            style:
-                GoogleFonts.cookie(fontSize: titleFontSize, fontWeight: FontWeight.bold),
+            style: GoogleFonts.cookie(
+                fontSize: titleFontSize, fontWeight: FontWeight.bold),
           ),
         ),
         Text(

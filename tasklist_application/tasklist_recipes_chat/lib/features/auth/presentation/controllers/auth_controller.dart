@@ -81,7 +81,7 @@ class AuthController {
         title: 'Loading',
         text: 'Please wait...');
     final useCase = SendOtpUseCase(authRepo: getit.get<AuthRepoImpl>());
-    final result = await useCase.call(email,false);
+    final result = await useCase.call(email, false);
     Navigator.pop(context);
     result.fold(
       (failure) {

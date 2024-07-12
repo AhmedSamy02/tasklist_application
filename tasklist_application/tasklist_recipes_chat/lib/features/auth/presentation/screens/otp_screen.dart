@@ -12,9 +12,10 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
+    final data =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final email = data['email'] as String;
-    final forget = data['forget']as bool;
+    final forget = data['forget'] as bool;
     final pinController = TextEditingController();
     final defaultPinTheme = PinTheme(
       width: 56,

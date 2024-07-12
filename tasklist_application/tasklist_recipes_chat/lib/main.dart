@@ -20,7 +20,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return ScreenUtilInit(
       minTextAdapt: true,
       splitScreenMode: true,
@@ -35,7 +34,7 @@ class MainApp extends StatelessWidget {
           kOnboardingScreen: (context) => const OnboardingScreen(),
           kLoginScreen: (context) => LoginScreen(),
           kEmailScreen: (context) => const EmailScreen(),
-          kOtpScreen:(context)=> const OtpScreen(),
+          kOtpScreen: (context) => const OtpScreen(),
           kResetPasswordScreen: (context) => const ResetPasswordScreen(),
           kRegisterScreen: (context) => const RegisterScreen(),
         },

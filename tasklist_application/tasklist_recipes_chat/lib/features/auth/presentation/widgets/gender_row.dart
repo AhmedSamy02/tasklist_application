@@ -12,7 +12,8 @@ class GenderRow extends StatelessWidget {
           'Gender',
           style: TextStyle(
             fontSize: 16.sp,
-            fontWeight: FontWeight.w600,),
+            fontWeight: FontWeight.w600,
+          ),
         ),
         const Spacer(),
         DropdownButton<String>(

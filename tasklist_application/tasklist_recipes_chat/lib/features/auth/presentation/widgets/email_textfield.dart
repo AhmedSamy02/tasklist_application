@@ -25,37 +25,36 @@ class EmailTextfield extends StatelessWidget {
         }
         return null;
       },
-      
       initialValue: initialValue,
       controller: emailController,
       enabled: enabled,
       keyboardType: TextInputType.emailAddress,
       maxLines: 1,
       textInputAction: textInputAction ?? TextInputAction.next,
-      
-      decoration:  InputDecoration(
-        fillColor: enabled?Colors.transparent:Colors.grey[500],
-          focusedBorder:const OutlineInputBorder(
+      decoration: InputDecoration(
+          fillColor: enabled ? Colors.transparent : Colors.grey[500],
+          focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.indigo, width: 2.0),
             borderRadius: BorderRadius.all(
               Radius.circular(10),
             ),
           ),
-          disabledBorder:const OutlineInputBorder(
+          disabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey, width: 2.0),
             borderRadius: BorderRadius.all(
               Radius.circular(10),
             ),
           ),
-          border:const OutlineInputBorder(
+          border: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey, width: 2.0),
             borderRadius: BorderRadius.all(
               Radius.circular(10),
             ),
           ),
           labelText: 'Email',
-          floatingLabelStyle: const TextStyle( fontSize: 18,)
-          ),
+          floatingLabelStyle: const TextStyle(
+            fontSize: 18,
+          )),
     );
   }
 }
