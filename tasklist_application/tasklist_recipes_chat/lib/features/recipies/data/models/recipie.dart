@@ -36,8 +36,8 @@ class Recipie {
         diet: json['diet'] as String?,
         ingredientsName: json['ingredients_name'] as String?,
         ingredientsQuantity: json['ingredients_quantity'] as String?,
-        prepTimeInMins: json['prep_time (in mins)'] as int?,
-        cookTimeInMins: json['cook_time (in mins)'] as int?,
+        prepTimeInMins: (json['prep_time (in mins)'] as double?)?.toInt(),
+        cookTimeInMins: (json['cook_time (in mins)'] as double?)?.toInt(),
         instructions: json['instructions'] as String?,
         imageUrl: json['image_url'] as String?,
       );

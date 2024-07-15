@@ -9,7 +9,7 @@ abstract class RecipiesRemoteDataSource {
 
 class RecipiesRemoteDataSourceImpl implements RecipiesRemoteDataSource {
   final Dio dio;
-  final endpoint = 'recipies/';
+  final endpoint = 'recipes/';
   RecipiesRemoteDataSourceImpl({required this.dio});
   @override
   Future<List<Recipie>> getRecipies(
@@ -18,6 +18,8 @@ class RecipiesRemoteDataSourceImpl implements RecipiesRemoteDataSource {
     final response = await dio.get('$baseURL$endpoint',
         queryParameters: {'offset': page, 'limit': limit},
         options: Options(headers: {'Authorization': 'Bearer $token'}));
-    return response.data['data'].map((e) => Recipie.fromJson(e)).toList();
+        
+        final recipies = response.data['data'] as List<dynamic>;
+    return recipies.map((e) => Recipie.fromJson(e)).toList();
   }
 }

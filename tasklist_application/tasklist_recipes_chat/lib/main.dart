@@ -9,6 +9,8 @@ import 'package:tasklist_recipes_chat/features/auth/presentation/screens/onboard
 import 'package:tasklist_recipes_chat/features/auth/presentation/screens/otp_screen.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/screens/register_screen.dart';
 import 'package:tasklist_recipes_chat/features/auth/presentation/screens/reset_password_screen.dart';
+import 'package:tasklist_recipes_chat/features/recipies/presentation/screens/recipies_details_screen.dart';
+import 'package:tasklist_recipes_chat/home_screen.dart';
 
 void main() {
   initializeSingletons();
@@ -29,7 +31,7 @@ class MainApp extends StatelessWidget {
           primarySwatch: Colors.indigo,
           textTheme: GoogleFonts.robotoTextTheme(),
         ),
-        initialRoute: kLoginScreen,
+        initialRoute: kHomeScreen,
         routes: {
           kOnboardingScreen: (context) => const OnboardingScreen(),
           kLoginScreen: (context) => LoginScreen(),
@@ -37,6 +39,8 @@ class MainApp extends StatelessWidget {
           kOtpScreen: (context) => const OtpScreen(),
           kResetPasswordScreen: (context) => const ResetPasswordScreen(),
           kRegisterScreen: (context) => const RegisterScreen(),
+          kHomeScreen: (context) => const HomeScreen(),
+          kRecipieDetailsScreen: (context) => const RecipiesDetailsScreen(),
         },
       ),
     );

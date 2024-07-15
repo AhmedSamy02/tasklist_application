@@ -65,7 +65,7 @@ class AuthController {
           title: 'Success',
           text: 'Login successful',
         );
-        // Navigator.pushNamed(context, kHomeScreen);
+        Navigator.pushReplacementNamed(context, kHomeScreen);
       },
     );
   }
