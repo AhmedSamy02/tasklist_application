@@ -86,14 +86,14 @@ class RecipieListItem extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        RecipieItemCard(
+                        recipie.prepTimeInMins!=null? RecipieItemCard(
                           time: recipie.prepTimeInMins ?? 0,
                           icon: kPrepAsset,
-                        ),
-                        RecipieItemCard(
+                        ):const SizedBox(),
+                        recipie.prepTimeInMins!=null? RecipieItemCard(
                           time: recipie.cookTimeInMins ?? 0,
                           icon: kCookingAsset,
-                        ),
+                        ):const SizedBox(),
                       ],
                     )
                   ],
