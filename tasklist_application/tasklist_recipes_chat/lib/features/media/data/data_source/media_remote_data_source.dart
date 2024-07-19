@@ -16,17 +16,27 @@ class MediaRemoteDataSourceImpl implements MediaRemoteDataSource {
 
   MediaRemoteDataSourceImpl({required this.dio});
   @override
-  Future<void> deleteMedia({required String id}) async {}
+  Future<void> deleteMedia({required String id}) async {
+    final token = await getit.get<FlutterSecureStorage>().read(key: 'token');
+    await dio.delete(
+      '$baseURL$endpoint',
+      queryParameters: {
+        'id': id,
+      },
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
+  }
 
   @override
   Future<List<Media>> getMedia({required int page, required int limit}) async {
     final token = await getit.get<FlutterSecureStorage>().read(key: 'token');
-    final response = await getit.get<Dio>().get(
-          '$baseURL$endpoint',
-          queryParameters: {'offset': page, 'limit': limit},
-          options: Options(headers: {'Authorization': 'Bearer $token'}),
-        );
-    final media = response.data['data'] as List<Map<String, dynamic>>;
+    final response = await dio.get(
+      '$baseURL$endpoint',
+      queryParameters: {'offset': page, 'limit': limit},
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
+    final media = response.data['data'] as List<dynamic>;
+    if (media.isEmpty) return [];
     return media.map((e) => Media.fromJson(e)).toList();
   }
 

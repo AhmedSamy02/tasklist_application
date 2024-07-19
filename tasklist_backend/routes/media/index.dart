@@ -19,30 +19,24 @@ Future<Response> onRequest(RequestContext context) async {
       final media = await context
           .read<MediaRepository>()
           .getMediaList(userId: user.id, page: page, limit: limit);
-      if (media.isEmpty) {
-        return Response.json(
-          statusCode: 404,
-          body: {
-            'status_code': 404,
-            'message': 'No Media Found',
-          },
-        );
-      }
+
       return succesResponseWithList('Media Got Successfully', media);
     case HttpMethod.post:
       final formData = await request.formData();
       final files = formData.files;
-      if (files.containsKey('media') ||
+      final fields = formData.fields;
+      if (!files.containsKey('media') ||
           files['media'] == null ||
-          files.containsKey('name') ||
-          files['name'] == null) {
-        return Responses.badRequest;
+          !fields.containsKey('name') ||
+          fields['name'] == null) {
+        return badRequestResponse('Media and Name are Required');
       }
+      final name = fields['name']!;
       final media = files['media']!;
       final done = await context.read<MediaRepository>().uploadMedia(
             userId: user.id,
             file: media,
-            mediaName: request.url.queryParameters['name']!,
+            mediaName: name,
           );
       if (done) {
         return Response.json(
@@ -59,9 +53,8 @@ Future<Response> onRequest(RequestContext context) async {
       if (mediaId == null) {
         return Responses.badRequest;
       }
-      final done = await context
-          .read<MediaRepository>()
-          .deleteMedia(mediaId: mediaId);
+      final done =
+          await context.read<MediaRepository>().deleteMedia(mediaId: mediaId);
       if (done) {
         return Response.json(
           body: {

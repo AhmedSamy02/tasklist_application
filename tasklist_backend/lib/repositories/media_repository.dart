@@ -12,9 +12,10 @@ class MediaRepository {
   }) async {
     try {
       final collection = getIt.get<DbCollection>(instanceName: 'media');
-      final uploader = getIt.get<Uploader>();
-      final response = await uploader.upload(file);
-      final mediaLink = response!.data!.secureUrl!;
+      final uploader = getIt.get<Uploader>();logger.i('Here');
+
+      final response = await uploader.upload(file);      
+      final mediaLink = response?.data?.secureUrl;
       await collection.insertOne({
         'name': mediaLink,
         'user_id': userId,

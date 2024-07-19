@@ -1,7 +1,7 @@
 class Media {
-  String id;
-  String name;
-  String mediaLink;
+  String? id;
+  String? name;
+  String? mediaLink;
   Media({
     required this.id,
     required this.name,

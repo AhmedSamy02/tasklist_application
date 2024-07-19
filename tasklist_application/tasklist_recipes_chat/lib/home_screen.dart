@@ -1,6 +1,13 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:tasklist_recipes_chat/core/constants/colors.dart';
+import 'package:tasklist_recipes_chat/core/constants/values.dart';
+import 'package:tasklist_recipes_chat/features/media/data/models/media.dart';
+import 'package:tasklist_recipes_chat/features/media/presentation/controllers/media_controller.dart';
+import 'package:tasklist_recipes_chat/features/media/presentation/screens/media_screen.dart';
+import 'package:tasklist_recipes_chat/features/media/presentation/widgets/add_media_quick_alert.dart';
 import 'package:tasklist_recipes_chat/features/recipies/presentation/screens/recipies_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,21 +20,65 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final colorsList = [kPage1Color, kPage2Color, kPage3Color];
   final textList = ['Task List', 'Recipes', 'Media'];
-  final widgetsList = [
-    const Placeholder(),
-    const RecipiesScreen(),
-    const Placeholder(),
-  ];
+  static const _pageSize = 10;
+
   bool fromNavigaion = false;
   final PageController _pageController = PageController();
   int index = 0;
+  final pagingController = PagingController<int, Media>(
+    firstPageKey: 0,
+  );
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    pagingController.addPageRequestListener((pageKey) async {
+      await getit.get<MediaController>().getMedia(
+            page: pageKey,
+            limit: _pageSize,
+            controller: pagingController,
+            context: context,
+          );
+    });
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final widgetsList = [
+      const Placeholder(),
+      const RecipiesScreen(),
+      MediaScreen(
+        pagingController: pagingController,
+      ),
+    ];
+    final List<Widget?> fabList = [
+      null,
+      null,
+      FloatingActionButton(
+        onPressed: () async {
+          await AddMediaQuickAlert.show(
+            context: context,
+            nameController: TextEditingController(),
+            picker: ImagePicker(),
+            pageController: pagingController,
+          );
+        },
+        backgroundColor: Colors.blueGrey[800],
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      )
+    ];
     return Scaffold(
       appBar: AppBar(
         title: Text(
           textList[index],
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: colorsList[index],
       ),
@@ -42,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
       ),
+      floatingActionButton: fabList[index],
       bottomNavigationBar: CurvedNavigationBar(
         animationCurve: Curves.easeInOut,
         animationDuration: Durations.long2,
@@ -70,8 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
               duration: Durations.long2, curve: Curves.easeInOut);
           fromNavigaion = false;
           setState(() {
-              this.index = index;
-            });
+            this.index = index;
+          });
         },
       ),
     );
