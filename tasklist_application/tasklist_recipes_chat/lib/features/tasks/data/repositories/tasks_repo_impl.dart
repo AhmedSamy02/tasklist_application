@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:tasklist_recipes_chat/core/errors/failure.dart';
 import 'package:tasklist_recipes_chat/core/errors/server_failure.dart';
+import 'package:tasklist_recipes_chat/core/errors/unauthorized_failure.dart';
 import 'package:tasklist_recipes_chat/core/errors/unknown_failure.dart';
 import 'package:tasklist_recipes_chat/features/tasks/data/data_source/tasks_remote_data_source.dart';
 import 'package:tasklist_recipes_chat/features/tasks/data/models/tasklist.dart';
@@ -18,6 +19,9 @@ class TasksRepoImpl implements TasksRepo {
       await remoteDataSource.createTaskList(title, description);
       return right(null);
     } on DioException catch (e) {
+      if(e.response?.statusCode == 401) {
+        return left(UnauthorizedFailure(message: 'Unauthorized'));
+      }
       return left(ServerFailure.fromDio(e));
     } catch (e) {
       return left(UnknownFailure(message: e.toString()));
@@ -30,6 +34,9 @@ class TasksRepoImpl implements TasksRepo {
       await remoteDataSource.deleteTaskList(title);
       return right(null);
     } on DioException catch (e) {
+      if(e.response?.statusCode == 401) {
+        return left(UnauthorizedFailure(message: 'Unauthorized'));
+      }
       return left(ServerFailure.fromDio(e));
     } catch (e) {
       return left(UnknownFailure(message: e.toString()));
@@ -42,6 +49,9 @@ class TasksRepoImpl implements TasksRepo {
       final taskLists = await remoteDataSource.getTaskLists();
       return right(taskLists);
     } on DioException catch (e) {
+      if(e.response?.statusCode == 401) {
+        return left(UnauthorizedFailure(message: 'Unauthorized'));
+      }
       return left(ServerFailure.fromDio(e));
     } catch (e) {
       return left(UnknownFailure(message: e.toString()));
@@ -54,6 +64,9 @@ class TasksRepoImpl implements TasksRepo {
       await remoteDataSource.updateTaskList(taskList);
       return right(null);
     } on DioException catch (e) {
+      if(e.response?.statusCode == 401) {
+        return left(UnauthorizedFailure(message: 'Unauthorized'));
+      }
       return left(ServerFailure.fromDio(e));
     } catch (e) {
       return left(UnknownFailure(message: e.toString()));
