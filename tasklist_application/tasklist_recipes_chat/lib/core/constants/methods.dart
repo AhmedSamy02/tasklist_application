@@ -61,6 +61,12 @@ void initializeSingletons() {
   );
 }
 
+Future<void> deleteCredentials() async {
+  final secure = getit.get<FlutterSecureStorage>();
+  await secure.deleteAll();
+  await secure.write(key: 'logged In', value: 'false');
+}
+
 Future<void> checkToken({required BuildContext context}) async {
   await QuickAlert.show(
     context: context,
@@ -69,9 +75,7 @@ Future<void> checkToken({required BuildContext context}) async {
     text: 'Your token has expired, please login again',
     autoCloseDuration: const Duration(seconds: 5),
   );
-  final secure = getit.get<FlutterSecureStorage>();
-  await secure.deleteAll();
-  await secure.write(key: 'logged In', value: 'false');
+  deleteCredentials();
   Navigator.of(context).pushNamedAndRemoveUntil(
     kLoginScreen,
     (route) => false,

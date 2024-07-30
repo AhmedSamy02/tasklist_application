@@ -270,7 +270,10 @@ class AuthController {
 
   Future<void> logout(BuildContext context) async {
     showLoadingQuickAlert(context: context);
-    await getit.get<FlutterSecureStorage>().deleteAll();
-    Navigator.popAndPushNamed(context,kLoginScreen);
+    await deleteCredentials();
+    Navigator.of(context).pushNamedAndRemoveUntil(
+    kLoginScreen,
+    (route) => false,
+  );
   }
 }

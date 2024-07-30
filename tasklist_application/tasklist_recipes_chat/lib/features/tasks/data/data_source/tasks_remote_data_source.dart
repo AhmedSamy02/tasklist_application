@@ -37,7 +37,7 @@ class TasksRemoteDataSourceImpl implements TasksRemoteDataSource {
   @override
   Future<void> deleteTaskList(String title) async {
     final token = await getit.get<FlutterSecureStorage>().read(key: 'token');
-    await dio.put(
+    await dio.delete(
       '$baseURL$listsEndpoint',
       data: {
         'title': title,

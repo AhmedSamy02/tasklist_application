@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:tasklist_recipes_chat/core/constants/methods.dart';
 import 'package:tasklist_recipes_chat/core/constants/values.dart';
 import 'package:tasklist_recipes_chat/core/errors/unauthorized_failure.dart';
@@ -44,9 +45,10 @@ class TasklistCubit extends Cubit<TasklistStates> {
 
   void deleteTasklist(
       {required String title, required BuildContext context}) async {
-    emit(TasklistLoadingState());
+    showLoadingQuickAlert(context: context);
     try {
       final tasks = await DeleteTaskListUseCase(_tasksRepo).call(title);
+      Navigator.pop(context);
       tasks.fold((failure) async {
         logger.e('Error: ${failure.message}');
         switch (failure.runtimeType) {
@@ -54,11 +56,18 @@ class TasklistCubit extends Cubit<TasklistStates> {
             await checkToken(context: context);
             break;
           default:
-            emit(TasklistErrorState(message: failure.message));
+            showErrorQuickAlert(context: context, text: failure.message);
             break;
         }
-      }, (none) {
+      }, (none) async {
         getTasklist(context: context);
+        await QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          barrierDismissible: false,
+          title: 'Success',
+          text: 'Tasklist deleted successfully',
+        );
       });
     } catch (e) {
       emit(TasklistErrorState(message: e.toString()));
