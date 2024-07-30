@@ -24,6 +24,9 @@ class TasklistRepository {
         .get<DbCollection>(instanceName: 'task_lists')
         .find(where.eq('user_id', userId))
         .toList();
+    for (final taskList in taskLists) {
+      taskList.remove('user_id');
+    }
     return taskLists;
   }
 

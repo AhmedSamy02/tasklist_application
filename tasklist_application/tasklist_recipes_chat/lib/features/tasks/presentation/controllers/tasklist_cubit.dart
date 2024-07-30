@@ -27,7 +27,6 @@ class TasklistCubit extends Cubit<TasklistStates> {
             await checkToken(context: context);
             break;
           default:
-            showErrorQuickAlert(context: context, text: failure.message);
             emit(TasklistErrorState(message: failure.message));
             break;
         }
@@ -35,7 +34,7 @@ class TasklistCubit extends Cubit<TasklistStates> {
         if (taskLists.isEmpty) {
           emit(TasklistEmptyState());
         } else {
-          emit(TasklistCompletedState(tasks: taskLists));
+          emit(TasklistCompletedState(tasklists: taskLists));
         }
       });
     } catch (e) {
@@ -55,7 +54,6 @@ class TasklistCubit extends Cubit<TasklistStates> {
             await checkToken(context: context);
             break;
           default:
-            showErrorQuickAlert(context: context, text: failure.message);
             emit(TasklistErrorState(message: failure.message));
             break;
         }
@@ -82,7 +80,6 @@ class TasklistCubit extends Cubit<TasklistStates> {
             await checkToken(context: context);
             break;
           default:
-            showErrorQuickAlert(context: context, text: failure.message);
             emit(TasklistErrorState(message: failure.message));
             break;
         }
@@ -108,7 +105,6 @@ class TasklistCubit extends Cubit<TasklistStates> {
             await checkToken(context: context);
             break;
           default:
-            showErrorQuickAlert(context: context, text: failure.message);
             emit(TasklistErrorState(message: failure.message));
             break;
         }

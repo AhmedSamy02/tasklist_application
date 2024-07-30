@@ -14,6 +14,9 @@ import 'package:tasklist_recipes_chat/features/recipies/data/data_source/recipie
 import 'package:tasklist_recipes_chat/features/recipies/data/repositories/recipie_repo_impl.dart';
 import 'package:tasklist_recipes_chat/features/recipies/domain/use_cases/get_recipies_use_case.dart';
 import 'package:tasklist_recipes_chat/features/recipies/presentation/controllers/recipies_controller.dart';
+import 'package:tasklist_recipes_chat/features/tasks/data/data_source/tasks_remote_data_source.dart';
+import 'package:tasklist_recipes_chat/features/tasks/data/repositories/tasks_repo_impl.dart';
+import 'package:tasklist_recipes_chat/features/tasks/domain/repos/tasks_repo.dart';
 
 void initializeSingletons() {
   getit.registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
@@ -21,6 +24,13 @@ void initializeSingletons() {
   getit.registerSingleton<AuthRepoImpl>(
     AuthRepoImpl(
       remoteDataSource: AuthRemoteDatasourceImpl(
+        dio: dio,
+      ),
+    ),
+  );
+  getit.registerSingleton<TasksRepo>(
+    TasksRepoImpl(
+      remoteDataSource: TasksRemoteDataSourceImpl(
         dio: dio,
       ),
     ),

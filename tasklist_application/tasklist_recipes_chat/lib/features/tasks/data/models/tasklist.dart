@@ -11,7 +11,7 @@ class TaskList {
   });
   factory TaskList.fromJson(Map<String, dynamic> json) {
     return TaskList(
-      id: json['id'] as String,
+      id: json['_id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
       tasksCount: json['tasks_count'] as int,

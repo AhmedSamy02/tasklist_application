@@ -8,17 +8,20 @@ Future<Response> onRequest(RequestContext context) async {
   final user = context.read<User>();
   final userId = user.id;
   final request = context.request;
-  final body = await request.json() as Map<String, dynamic>;
-  switch (context.request.method) {
+  switch (request.method) {
     case HttpMethod.get:
-      return Response.json(body: {
-        'status_code': 200,
-        'message': 'Task Lists are fetched successfully',
-        'data': await context.read<TasklistRepository>().getTasklists(userId),
-      });
+      return Response.json(
+        body: {
+          'status_code': 200,
+          'message': 'Task Lists are fetched successfully',
+          'data': await context.read<TasklistRepository>().getTasklists(userId),
+        },
+      );
     case HttpMethod.put:
+      final body = await request.json() as Map<String, dynamic>;
       return _handlePutRequest(body, context, userId);
     case HttpMethod.delete:
+      final body = await request.json() as Map<String, dynamic>;
       if (!body.containsKey('title') ||
           body['title'] == null ||
           body['title'] is! String) {

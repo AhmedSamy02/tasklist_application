@@ -7,9 +7,9 @@ class TasklistInitialState extends TasklistStates {}
 class TasklistLoadingState extends TasklistStates {}
 
 class TasklistCompletedState extends TasklistStates {
-  final List<TaskList> tasks;
+  final List<TaskList> tasklists;
 
-  TasklistCompletedState({required this.tasks});
+  TasklistCompletedState({required this.tasklists});
 }
 
 class TasklistErrorState extends TasklistStates {

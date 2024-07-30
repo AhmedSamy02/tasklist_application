@@ -61,7 +61,7 @@ class TasksRemoteDataSourceImpl implements TasksRemoteDataSource {
         },
       ),
     );
-    return (response.data as List)
+    return (response.data['data'] as List)
         .map((e) => TaskList.fromJson(e as Map<String, dynamic>))
         .toList();
   }
