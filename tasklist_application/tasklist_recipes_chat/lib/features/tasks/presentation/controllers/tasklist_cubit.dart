@@ -70,7 +70,7 @@ class TasklistCubit extends Cubit<TasklistStates> {
         );
       });
     } catch (e) {
-      emit(TasklistErrorState(message: e.toString()));
+      showErrorQuickAlert(context: context, text: e.toString());
     }
   }
 
@@ -102,11 +102,12 @@ class TasklistCubit extends Cubit<TasklistStates> {
 
   void updateTasklist(
       {required TaskList tasklist, required BuildContext context}) async {
-    emit(TasklistLoadingState());
+    showLoadingQuickAlert(context: context);
     try {
       final tasks = await UpdateTaskListUseCase(_tasksRepo).call(
         tasklist,
       );
+      Navigator.pop(context);
       tasks.fold((failure) async {
         logger.e('Error: ${failure.message}');
         switch (failure.runtimeType) {
@@ -114,14 +115,14 @@ class TasklistCubit extends Cubit<TasklistStates> {
             await checkToken(context: context);
             break;
           default:
-            emit(TasklistErrorState(message: failure.message));
+            showErrorQuickAlert(context: context, text: failure.message);
             break;
         }
       }, (none) {
         getTasklist(context: context);
       });
     } catch (e) {
-      emit(TasklistErrorState(message: e.toString()));
+      showErrorQuickAlert(context: context, text: e.toString());
     }
   }
 }
