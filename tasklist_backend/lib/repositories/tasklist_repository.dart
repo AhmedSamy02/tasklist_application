@@ -3,6 +3,23 @@ import 'package:tasklist_backend/constants/values.dart';
 import 'package:tasklist_backend/models/task_list.dart';
 
 class TasklistRepository {
+  Future<void> updateTasklist({
+    required String id,
+    required String userId,
+    String? title,
+    String? description,
+  }) async {
+    if (title != null) {
+      modify.set('title', title);
+    }
+    if (description != null) {
+      modify.set('description', description);
+    }
+    await getIt
+        .get<DbCollection>(instanceName: 'task_lists')
+        .update(where.eq('_id', ObjectId.fromHexString(id)), modify);
+  }
+
   Future<TaskList> createTasklist({
     required String userId,
     required String title,

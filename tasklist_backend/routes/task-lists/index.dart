@@ -20,6 +20,9 @@ Future<Response> onRequest(RequestContext context) async {
     case HttpMethod.put:
       final body = await request.json() as Map<String, dynamic>;
       return _handlePutRequest(body, context, userId);
+    case HttpMethod.post:
+      final body = await request.json() as Map<String, dynamic>;
+      return _handlePostRequest(body, context, userId);
     case HttpMethod.delete:
       final body = await request.json() as Map<String, dynamic>;
       if (!body.containsKey('title') ||
@@ -51,8 +54,83 @@ Future<Response> onRequest(RequestContext context) async {
   }
 }
 
+Future<Response> _handlePostRequest(
+  Map<String, dynamic> body,
+  RequestContext context,
+  String userId,
+) async {
+  if (!body.containsKey('id') || body['id'] == null || body['id'] is! String) {
+    return Response.json(
+      body: {
+        'status_code': 400,
+        'message': 'ID must be provided',
+      },
+      statusCode: 400,
+    );
+  }
+  final id = body['id'] as String;
+  if (id.isEmpty) {
+    return Response.json(
+      body: {
+        'status_code': 400,
+        'message': 'ID cannot be empty',
+      },
+      statusCode: 400,
+    );
+  }
+  String? title;
+  String? description;
+  if(!body.containsKey('title')){
+    title = null;
+  }
+  if (body.containsKey('title') &&
+      (body['title'] == null || body['title'] is! String)) {
+    return Response.json(
+      body: {
+        'status_code': 400,
+        'message': "Title can't be null",
+      },
+      statusCode: 400,
+    );
+  }
+  if(!body.containsKey('description')){
+    description = null;
+  }
+  if (body.containsKey('description') &&
+      (body['description'] == null || body['description'] is! String)) {
+    return Response.json(
+      body: {
+        'status_code': 400,
+        'message': "Description can't be null",
+      },
+      statusCode: 400,
+    );
+  }
+  if(title==null&& description==null){
+    return Response.json(
+      body: {
+        'status_code': 400,
+        'message': 'Title or description must be provided',
+      },
+      statusCode: 400,
+    );
+  }
+  await context
+      .read<TasklistRepository>()
+      .updateTasklist(id: id, userId: userId, title: title, description: description);
+      return Response.json(
+        body: {
+          'status_code': 200,
+          'message': 'Task List is updated successfully',
+        },
+      );
+}
+
 Future<Response> _handlePutRequest(
-    Map<String, dynamic> body, RequestContext context, String userId) async {
+  Map<String, dynamic> body,
+  RequestContext context,
+  String userId,
+) async {
   if (!body.containsKey('title') ||
       !body.containsKey('description') ||
       body['title'] == null ||
