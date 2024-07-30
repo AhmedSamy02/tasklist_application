@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:tasklist_recipes_chat/core/constants/colors.dart';
 import 'package:tasklist_recipes_chat/core/constants/values.dart';
+import 'package:tasklist_recipes_chat/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:tasklist_recipes_chat/features/media/data/models/media.dart';
 import 'package:tasklist_recipes_chat/features/media/presentation/controllers/media_controller.dart';
 import 'package:tasklist_recipes_chat/features/media/presentation/screens/media_screen.dart';
@@ -94,7 +95,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             IconButton(
-              onPressed: () {
+              onPressed: ()async {
+                await getit.get<AuthController>().logout(context);
               },
               icon: const Icon(
                 Icons.exit_to_app,

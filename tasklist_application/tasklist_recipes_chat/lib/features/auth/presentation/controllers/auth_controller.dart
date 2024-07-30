@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:tasklist_recipes_chat/core/constants/methods.dart';
 import 'package:tasklist_recipes_chat/core/constants/screens.dart';
 import 'package:tasklist_recipes_chat/core/constants/values.dart';
 import 'package:tasklist_recipes_chat/core/errors/server_failure.dart';
@@ -265,5 +266,11 @@ class AuthController {
         Navigator.popUntil(context, ModalRoute.withName(kLoginScreen));
       },
     );
+  }
+
+  Future<void> logout(BuildContext context) async {
+    showLoadingQuickAlert(context: context);
+    await getit.get<FlutterSecureStorage>().deleteAll();
+    Navigator.popAndPushNamed(context,kLoginScreen);
   }
 }
